@@ -1,0 +1,19 @@
+#!/bin/bash
+#https://docs.okd.io/latest/minishift/getting-started/setting-up-virtualization-environment.html#for-linux
+apt install qemu-kvm libvirt-daemon libvirt-daemon-system
+usermod -a -G libvirt root
+newgrp libvirt
+curl -L https://github.com/dhiltgen/docker-machine-kvm/releases/download/v0.10.0/docker-machine-driver-kvm-ubuntu16.04 -o /usr/local/bin/docker-machine-driver-kvm
+chmod +x /usr/local/bin/docker-machine-driver-kvm
+systemctl is-active libvirtd
+#TODO run if output ist not active: 
+#systemctl start libvirtd
+virsh net-list --all
+#TODO run if network default is not present
+#virsh net-start default
+#virsh net-autostart default
+#install minishift
+curl -L https://github.com/minishift/minishift/releases/download/v1.29.0/minishift-1.29.0-linux-amd64.tgz -o ./minishift-1.29.0-linux-amd64.tgz
+tar -xvf minishift-1.29.0-linux-amd64.tgz
+mv ./minishift-1.29.0-linux-amd64/minishift /usr/local/bin/minishift
+chmod +x /usr/local/bin/minishift
